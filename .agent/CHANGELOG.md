@@ -1,4 +1,4 @@
 # Changelog (completed work only — never plans)
 
 ## 2026-11-15
-- Phase 1 app created on branch `agent/phase1-shell`: domain logic with 25 unit tests (passed locally), local storage, Home / Add reading / Analytics screens, drawer, alert bell, light and dark theme. CI result and commit: see the pull request and `implementation.md` verification log. Not device-tested.
+- Phase 1 app created on branch `agent/phase1-shell`: domain logic with 25 unit tests (passed locally), local storage, Home / Add reading / Analytics screens, drawer, alert bell, light and dark theme. Build 1 (commit 39fbc54): CI green — analyze clean, 28 tests passed, release APK 53 MB, package com.moamen.eaddady, signed with the shared debug key. Not device-tested.

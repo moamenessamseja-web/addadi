@@ -7,7 +7,7 @@ Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's devi
 ## 1. Domain logic (pure Dart)
 | Item | Status | Notes (evidence, build, limits) |
 |---|---|---|
-| Consumption per period, segments split at reset/replacement | Implemented, not yet verified | sanity: unit tests run locally with plain Dart (25 cases passed); CI result in the verification log |
+| Consumption per period, segments split at reset/replacement | Implemented, not yet verified | sanity: unit tests run locally with plain Dart (25 cases passed); CI green on 39fbc54 (see the verification log) |
 | Spike detection (threshold, needs 2 historical readings, no comparison across a reset) | Implemented, not yet verified | sanity as above; baseline definition is an engineer decision (DECISIONS 3) |
 | Entry validation (negative, lower than previous without reset tag, older date) | Implemented, not yet verified | sanity as above |
 | Number parsing (Arabic-Indic digits) and formatting (Latin, LTR runs) | Implemented, not yet verified | sanity as above |
@@ -42,4 +42,4 @@ Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's devi
 ## Verification log
 | Build | Commit | CI | Device |
 |---|---|---|---|
-| (first build pending) | | | not device-tested |
+| 1 | 39fbc54 | green: analyze (no warnings), 28 tests (25 domain + 3 widget), release APK 53 MB, package com.moamen.eaddady | not device-tested |
