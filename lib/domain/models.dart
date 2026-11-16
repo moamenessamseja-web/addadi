@@ -1,0 +1,95 @@
+/// Pure Dart (no Flutter imports): the data model of Ɛaddady.
+library;
+
+enum UtilityType { electricity, water, gas }
+
+extension UtilityTypeInfo on UtilityType {
+  /// Default unit; the unit actually used is stored on each meter.
+  String get defaultUnit => switch (this) {
+        UtilityType.electricity => 'kWh',
+        UtilityType.water => 'm³',
+        UtilityType.gas => 'm³',
+      };
+
+  String get labelAr => switch (this) {
+        UtilityType.electricity => 'كهرباء',
+        UtilityType.water => 'مياه',
+        UtilityType.gas => 'غاز',
+      };
+}
+
+UtilityType utilityTypeFromName(String? name) => UtilityType.values.firstWhere(
+      (t) => t.name == name,
+      orElse: () => UtilityType.electricity,
+    );
+
+/// One physical meter. Two electricity meters are two separate [Meter]s.
+class Meter {
+  const Meter({
+    required this.id,
+    required this.type,
+    required this.place,
+    required this.unit,
+  });
+
+  final String id;
+  final UtilityType type;
+
+  /// Property / place the meter belongs to (apartment, shop, ...). May be empty.
+  final String place;
+
+  /// Unit shown next to readings, e.g. kWh or m³. Never assumed from the type after creation.
+  final String unit;
+
+  String get title => place.trim().isEmpty ? type.labelAr : '${type.labelAr} — ${place.trim()}';
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'type': type.name,
+        'place': place,
+        'unit': unit,
+      };
+
+  factory Meter.fromJson(Map<String, Object?> json) => Meter(
+        id: json['id'] as String,
+        type: utilityTypeFromName(json['type'] as String?),
+        place: (json['place'] as String?) ?? '',
+        unit: (json['unit'] as String?) ?? 'kWh',
+      );
+}
+
+/// A timestamped cumulative value of one meter.
+///
+/// [isReset] marks a reset / replacement / capacity overflow: the reading starts a new
+/// comparison segment, and no consumption is calculated across that boundary.
+class Reading {
+  const Reading({
+    required this.id,
+    required this.meterId,
+    required this.value,
+    required this.at,
+    this.isReset = false,
+  });
+
+  final String id;
+  final String meterId;
+  final double value;
+  final DateTime at;
+  final bool isReset;
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'meterId': meterId,
+        'value': value,
+        'at': at.toIso8601String(),
+        'isReset': isReset,
+      };
+
+  factory Reading.fromJson(Map<String, Object?> json) => Reading(
+        id: json['id'] as String,
+        meterId: json['meterId'] as String,
+        value: (json['value'] as num).toDouble(),
+        at: DateTime.parse(json['at'] as String),
+        isReset: (json['isReset'] as bool?) ?? false,
+      );
+}
