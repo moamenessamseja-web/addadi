@@ -3,8 +3,8 @@
 Older detail lives in `archive/`. Rules: `ENGINEERING_RULES.md`. Per-feature statuses: `implementation.md`.
 
 ## Baselines and branches
-- Default branch `main`: 8a34717 (README and design document only, no code) — never built, never on a device.
-- Working branch `agent/phase1-shell`: Phase 1 app (domain logic, storage, three screens, drawer) — latest CI-green build: 39fbc54 (later commits on the branch only update these docs). Not merged, not device-tested.
+- Default branch `main`: 0e89188 (owner merged PR #1 on 2026-11-16; contains the Phase 1 app). CI green on main (push build, same code as 39fbc54). Not device-tested.
+- Working branches: none open. Next work starts from `main` on a new `agent/<task>` branch.
 - Rollback tags: none.
 
 ## This session (2026-11-15)
@@ -24,4 +24,5 @@ Older detail lives in `archive/`. Rules: `ENGINEERING_RULES.md`. Per-feature sta
 2. Owner feedback on the first build, then Phase 2 candidates: photo evidence, notifications, export, tariff.
 
 ## Build log
-1 Phase 1 first build · green (39fbc54)
+1 Phase 1 first build · green (39fbc54, PR)
+2 Phase 1 on main · green (0e89188, push after the owner merge) — this is the build to install
