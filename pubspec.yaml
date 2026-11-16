@@ -1,4 +1,4 @@
-name: eaddady
+name: addady
 description: "Ɛaddady (عَدّادي): private, offline-first personal utility meter tracking."
 publish_to: none
 version: 0.1.0+1
@@ -12,6 +12,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   shared_preferences: ^2.3.0
+  # Pinned exactly: the versions that built in CI and ran on the owner's phone in manager-assistant-ready (d2a17ef).
+  flutter_local_notifications: 17.2.4
+  timezone: 0.9.4
 
 dev_dependencies:
   flutter_test:

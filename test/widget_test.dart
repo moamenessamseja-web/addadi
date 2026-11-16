@@ -1,7 +1,7 @@
-import 'package:eaddady/app.dart';
-import 'package:eaddady/data/app_store.dart';
-import 'package:eaddady/data/storage.dart';
-import 'package:eaddady/domain/models.dart';
+import 'package:addady/app.dart';
+import 'package:addady/data/app_store.dart';
+import 'package:addady/data/storage.dart';
+import 'package:addady/domain/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

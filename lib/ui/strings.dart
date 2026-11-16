@@ -94,4 +94,13 @@ class S {
   static const saveSetting = 'حفظ';
   static const meterReadingsCount = 'قراءات';
   static const noMetersToManage = 'لا توجد عدادات.';
+
+  // Notifications
+  static const notificationsTitle = 'التنبيهات المحلية';
+  static const notificationsOn = 'مفعّلة: تنبيه عند الزيادة الملحوظة وتذكير بالقراءة';
+  static const notificationsOff = 'متوقفة. يبقى جرس التطبيق يعمل داخل التطبيق.';
+  static const notificationsBlocked = 'غير مسموحة من النظام. فعّلها من إعدادات التطبيق في الهاتف.';
+  static const notificationsError = 'تعذّرت جدولة بعض التنبيهات. جرّب مرة أخرى لاحقًا.';
+  static const notifDueTitle = 'تحتاج قراءة';
+  static const notifSpikeTitle = 'زيادة ملحوظة في الاستهلاك';
 }

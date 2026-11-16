@@ -1,7 +1,7 @@
-import 'package:eaddady/domain/app_data.dart';
-import 'package:eaddady/domain/consumption.dart';
-import 'package:eaddady/domain/format.dart';
-import 'package:eaddady/domain/models.dart';
+import 'package:addady/domain/app_data.dart';
+import 'package:addady/domain/consumption.dart';
+import 'package:addady/domain/format.dart';
+import 'package:addady/domain/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final _day0 = DateTime(2026, 1, 1);

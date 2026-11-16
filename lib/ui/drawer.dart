@@ -47,6 +47,7 @@ class AppDrawer extends StatelessWidget {
               ),
               onTap: () => showDialog<void>(context: context, builder: (_) => _ThresholdDialog(store: store)),
             ),
+            _NotificationsTile(store: store),
             ListTile(
               leading: const Icon(Icons.brightness_6),
               title: const Text(S.theme),
@@ -54,6 +55,49 @@ class AppDrawer extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _NotificationsTile extends StatelessWidget {
+  const _NotificationsTile({required this.store});
+
+  final AppStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: store,
+      builder: (context, _) => FutureBuilder<bool>(
+        future: store.notificationsPermitted(),
+        builder: (context, snapshot) {
+          final permitted = snapshot.data ?? false;
+          final enabled = store.notificationsEnabled;
+          final String status;
+          if (!enabled) {
+            status = S.notificationsOff;
+          } else if (!permitted) {
+            status = S.notificationsBlocked;
+          } else if (store.notificationError != null) {
+            status = S.notificationsError;
+          } else {
+            status = S.notificationsOn;
+          }
+          return SwitchListTile(
+            secondary: const Icon(Icons.notifications_active_outlined),
+            title: const Text(S.notificationsTitle),
+            subtitle: Text(status),
+            value: enabled,
+            onChanged: (value) async {
+              final allowed = await store.setNotificationsEnabled(value);
+              if (!context.mounted) return;
+              if (value && !allowed) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(S.notificationsBlocked)));
+              }
+            },
+          );
+        },
       ),
     );
   }

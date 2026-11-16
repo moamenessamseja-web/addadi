@@ -4,10 +4,13 @@ Older detail lives in `archive/`. Rules: `ENGINEERING_RULES.md`. Per-feature sta
 
 ## Baselines and branches
 - Default branch `main`: 0e89188 (owner merged PR #1 on 2026-11-16; contains the Phase 1 app). CI green on main (push build, same code as 39fbc54). Not device-tested.
-- Working branches: none open. Next work starts from `main` on a new `agent/<task>` branch.
+- Working branch `agent/phase2-notifications` (one PR, several verified commits, NOT merged: the owner has not merged anything and decides): Phase 2 = package rename to `addady`, local notifications, then the remaining drawer items (meter configuration + tariff, language, export).
 - Rollback tags: none.
 
-## This session (2026-11-15)
+## Session 2026-11-16 (Phase 2, in progress)
+- Done so far: package renamed to `addady` (applicationId `com.moamen.addady`); local notifications implemented (pure logic + plugin backend + preference switch), native setup script extended. Verified: 38 pure-Dart tests run locally (sanity); the injection script dry-run on a mock project. NOT verified yet: Flutter compile/CI of this commit, real notifications on the phone.
+
+## Session 2026-11-15 (Phase 1)
 - Changed (and why): created the Flutter app from nothing, following README + design foundation; pure-Dart domain first (tested), then storage, then UI.
 - Verified — and HOW: domain unit tests executed locally with plain Dart (sanity, 25 passed). Flutter code was not compiled locally (no Flutter SDK in the authoring sandbox); CI (Flutter 3.47.9) compiled it first time: analyze clean, 28 tests passed, release APK built (CI level). The APK was not opened or run by anyone yet.
 - NOT verified: everything that needs a phone (layout, Arabic wrapping, RTL feel, real Android storage, date/time picker digits, dark mode).

@@ -28,11 +28,18 @@ Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's devi
 | Add meter sheet | Implemented, not yet verified | |
 | RTL layout with numeric runs left-to-right, light and dark themes | Implemented, not yet verified | date/time pickers may show Arabic-Indic digits (DECISIONS 8) |
 
+## 3b. Notifications (Phase 2)
+| Item | Status | Notes (evidence, build, limits) |
+|---|---|---|
+| Spike notification, once per latest reading | Implemented, not yet verified | sanity: unit + store tests (fake backend); real delivery needs the owner's device |
+| "Reading due" reminder (30 days after the latest reading, 09:00) | Implemented, not yet verified | scheduled with inexact alarms; needs the owner's device and time |
+| Notification preference switch + OS permission handling | Implemented, not yet verified | Android 13+ permission dialog; needs the owner's device |
+| Native setup (permissions, receivers, desugaring, R8 rules) via tool/ci_android.sh | Implemented, not yet verified | dry-run on a mock project only; CI is the first real run |
+
 ## 4. Not in Phase 1
 | Item | Status | Notes (evidence, build, limits) |
 |---|---|---|
 | Photo evidence per reading | Not started | needs decisions 6 and 7 (camera/gallery, export) |
-| Local notifications | Not started | Android permission flow to decide |
 | CSV / PDF export | Not started | |
 | Local tariff and cost estimate | Not started | needs decision 4 (tariff representation) |
 | Language selection | Deferred by product decision | Arabic only until the owner asks |

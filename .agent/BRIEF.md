@@ -15,3 +15,9 @@
 - Language / tone: Arabic (Egyptian), writes technical terms in English.
 - Technical level: not a programmer; explain consequential decisions in plain words.
 - Pet peeves: false "done" claims; wants the commit number with every green build.
+
+## 2026-11-16 — after the first APK (owner tested everything on the phone)
+> تمام نزلت ال apk مانيوال ... جربت كل شئ كما اقترحت وكله تمام وظيفيا وحتي التصميم مقارب ل Eaddady_Design_Foundation_v0 باستثناء حجم الكروت الويدجت (وارد ان تكون مهارات التصميم القديمة والجديدة تحتاج مراجعة.. سيبك منها لها محادثات اخري بالفعل)
+> المطلوب منك ان تكمل الخطوات ابتداءً من الاشعارات ثم باقي عناصر القائمة الجانبية، تغيير اسم الحزمة الي addady.. سأمسح ال apk من فوني ونبدأ من جديد.. انا لم ادمج اي فرع علي ال main
+
+**Reading:** Phase 1 accepted functionally. Phase 2 order: (1) local notifications, (2) the remaining drawer items (meter configuration + local tariff, language, export), (3) package name `addady`. The owner deletes the old APK and starts fresh. Card/widget size differs from the design (design skills are being reviewed elsewhere; out of scope here). The owner has NOT merged anything: do not merge; leave the PR for the owner.
