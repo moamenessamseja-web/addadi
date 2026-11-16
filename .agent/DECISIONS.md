@@ -21,3 +21,7 @@
 - Design 6 and 7: photo from camera only, or gallery too; does the export include photo files or only references.
 - Local notifications: Android 13+ permission flow and wording.
 - Language switch: Arabic only for now (README mentions language selection).
+
+## Prior art in the owner other repositories (read before building notifications)
+- **Notifications / reminders: `moamenessamseja-web/manager-assistant-ready`, commit `d2a17efe50efb9c715525433aaca44ad8e3e700d`** (2026-10-22, recorded at the owner request). Per its commit message the earlier problems were: scheduling ran only on app open and created reminders for past occurrences (so nothing future was ever scheduled), scheduling was inexact only, and recurrence was ignored. The fix there: a testable notification backend, exact alarms when the user allows them (inexact fallback clearly flagged), recurring reminders as a pre-scheduled series (30 daily / 26 weekly / 12 monthly) refreshed on every app open, and CI injecting `SCHEDULE_EXACT_ALARM` into the manifest. Status: read from the commit message only; the code was not reviewed or reused yet. For this app it maps to the monthly reading reminder and spike alerts (design 8).
+
