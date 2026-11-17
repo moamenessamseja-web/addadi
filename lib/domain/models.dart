@@ -1,6 +1,8 @@
 /// Pure Dart (no Flutter imports): the data model of Ɛaddady.
 library;
 
+import 'tariff.dart';
+
 enum UtilityType { electricity, water, gas }
 
 extension UtilityTypeInfo on UtilityType {
@@ -30,6 +32,7 @@ class Meter {
     required this.type,
     required this.place,
     required this.unit,
+    this.tariff,
   });
 
   final String id;
@@ -41,6 +44,17 @@ class Meter {
   /// Unit shown next to readings, e.g. kWh or m³. Never assumed from the type after creation.
   final String unit;
 
+  /// Optional local tariff used only for the cost estimate. Null = no estimate is shown.
+  final Tariff? tariff;
+
+  Meter copyWith({String? place, String? unit, Tariff? tariff, bool clearTariff = false}) => Meter(
+        id: id,
+        type: type,
+        place: place ?? this.place,
+        unit: unit ?? this.unit,
+        tariff: clearTariff ? null : (tariff ?? this.tariff),
+      );
+
   String get title => place.trim().isEmpty ? type.labelAr : '${type.labelAr} — ${place.trim()}';
 
   Map<String, Object?> toJson() => {
@@ -48,6 +62,7 @@ class Meter {
         'type': type.name,
         'place': place,
         'unit': unit,
+        'tariff': tariff?.toJson(),
       };
 
   factory Meter.fromJson(Map<String, Object?> json) => Meter(
@@ -55,6 +70,7 @@ class Meter {
         type: utilityTypeFromName(json['type'] as String?),
         place: (json['place'] as String?) ?? '',
         unit: (json['unit'] as String?) ?? 'kWh',
+        tariff: json['tariff'] == null ? null : Tariff.fromJson((json['tariff'] as Map).cast<String, Object?>()),
       );
 }
 

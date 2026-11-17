@@ -36,6 +36,12 @@ Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's devi
 | Notification preference switch + OS permission handling | Implemented, not yet verified | Android 13+ permission dialog; needs the owner's device |
 | Native setup (permissions, receivers, desugaring, R8 rules) via tool/ci_android.sh | Implemented, not yet verified | dry-run on a mock project only; CI is the first real run |
 
+## 3c. Meter configuration and local tariff (Phase 2)
+| Item | Status | Notes (evidence, build, limits) |
+|---|---|---|
+| Edit a meter (place, unit) | Implemented, not yet verified | store test; UI needs the owner's device |
+| Local tariff (progressive tiers, fixed fee, currency label) and the cost estimate on the Analytics screen | Implemented, not yet verified | sanity: 51 pure-Dart tests incl. tier boundaries; always labelled an estimate; hidden until a tariff is set |
+
 ## 4. Not in Phase 1
 | Item | Status | Notes (evidence, build, limits) |
 |---|---|---|

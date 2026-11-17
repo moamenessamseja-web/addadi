@@ -95,6 +95,32 @@ class S {
   static const meterReadingsCount = 'قراءات';
   static const noMetersToManage = 'لا توجد عدادات.';
 
+  // Meter configuration and tariff
+  static const editMeter = 'تعديل العداد';
+  static const saveMeter = 'حفظ التعديلات';
+  static const tariffSection = 'التعرفة المحلية (اختياري)';
+  static const tariffEnable = 'تقدير التكلفة بتعرفة أدخلها بنفسي';
+  static const tariffHelper = 'الأرقام تُدخلها أنت وتبقى على هذا الجهاز. النتيجة تقدير وليست فاتورة رسمية.';
+  static const currency = 'العملة (مثل: ج.م)';
+  static const fixedFee = 'رسم ثابت لكل فترة';
+  static const tierUpTo = 'حتى (وحدة)';
+  static const tierPrice = 'السعر لكل وحدة';
+  static const tierRest = 'الباقي';
+  static const addTier = 'إضافة شريحة';
+  static const removeTier = 'حذف الشريحة';
+  static const tariffSet = 'تعرفة محلية';
+  static const tariffNeedsNumbers = 'أكمل أرقام الشرائح (حدّ كل شريحة وسعرها).';
+  static const tariffNoTiers = 'أضف شريحة واحدة على الأقل.';
+  static const tariffBadPrice = 'السعر لا يمكن أن يكون سالبًا.';
+  static const tariffBadFee = 'الرسم الثابت لا يمكن أن يكون سالبًا.';
+  static const tariffBadLimit = 'حدّ الشريحة يجب أن يكون رقمًا أكبر من صفر.';
+  static const tariffLimitsOrder = 'حدود الشرائح يجب أن تزيد من شريحة إلى التي بعدها.';
+  static const tariffLastOpen = 'الشريحة الأخيرة تكون «الباقي» بلا حد.';
+  static const costEstimate = 'التكلفة التقديرية';
+  static const costNote = 'تقدير حسب التعرفة التي أدخلتها، وليس فاتورة رسمية.';
+  static const costBasis = 'أساس الحساب';
+  static const tiersWord = 'شرائح';
+
   // Notifications
   static const notificationsTitle = 'التنبيهات المحلية';
   static const notificationsOn = 'مفعّلة: تنبيه عند الزيادة الملحوظة وتذكير بالقراءة';

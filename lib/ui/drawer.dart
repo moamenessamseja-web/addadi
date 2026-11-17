@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/app_store.dart';
 import 'add_meter_sheet.dart';
+import 'edit_meter_page.dart';
 import 'strings.dart';
 import 'tokens.dart';
 import 'widgets.dart';
@@ -220,6 +221,7 @@ class ManageMetersPage extends StatelessWidget {
               for (final m in meters)
                 ListTile(
                   leading: UtilityBadge(m.type, size: 40),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => EditMeterPage(store: store, meterId: m.id))),
                   title: Text(m.title),
                   subtitle: Row(children: [
                     NumericText(m.unit),
@@ -227,6 +229,12 @@ class ManageMetersPage extends StatelessWidget {
                     NumericText('${store.readingsOf(m.id).length}'),
                     const SizedBox(width: Space.xs),
                     const Text(S.meterReadingsCount),
+                    if (m.tariff != null) ...[
+                      const SizedBox(width: Space.m),
+                      Icon(Icons.request_quote_outlined, size: 14, color: c.textSecondary),
+                      const SizedBox(width: Space.xs),
+                      const Text(S.tariffSet),
+                    ],
                   ]),
                   trailing: IconButton(
                     tooltip: S.deleteMeter,

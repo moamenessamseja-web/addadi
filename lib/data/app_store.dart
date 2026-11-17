@@ -4,6 +4,7 @@ import '../domain/app_data.dart';
 import '../domain/consumption.dart';
 import '../domain/models.dart';
 import '../domain/notifications.dart';
+import '../domain/tariff.dart';
 import 'storage.dart';
 
 /// The single source of truth the UI listens to. Every change is written to local storage first;
@@ -88,6 +89,26 @@ class AppStore extends ChangeNotifier {
     await _commit(_data.copyWith(readings: [..._data.readings, reading]));
     await _afterReadingSaved(meterId);
     return null;
+  }
+
+  /// Changes the place, unit and optional local tariff of a meter. Readings are never touched.
+  Future<void> updateMeter({
+    required String meterId,
+    required String place,
+    required String unit,
+    Tariff? tariff,
+  }) async {
+    final meters = [
+      for (final m in _data.meters)
+        if (m.id == meterId)
+          m.copyWith(place: place.trim(), unit: unit.trim().isEmpty ? m.unit : unit.trim(), tariff: tariff, clearTariff: tariff == null)
+        else
+          m,
+    ];
+    await _commit(_data.copyWith(meters: meters));
+    try {
+      await syncNotifications();
+    } catch (_) {}
   }
 
   /// Removes the meter and all of its readings.

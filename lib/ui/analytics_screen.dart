@@ -133,6 +133,50 @@ class AnalyticsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (meter.tariff != null && cur != null) ...[
+              const SizedBox(height: Space.m),
+              AppCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(S.costEstimate, style: TextStyle(fontWeight: FontWeight.w700)),
+                    const SizedBox(height: Space.m),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: LabeledValue(
+                            label: S.currentPeriod,
+                            value: NumericText(
+                              '${formatNumber(meter.tariff!.estimate(cur.consumption))} ${meter.tariff!.currency}',
+                              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: c.brand700),
+                            ),
+                          ),
+                        ),
+                        if (prev != null)
+                          Expanded(
+                            child: LabeledValue(
+                              label: S.previousPeriod,
+                              value: NumericText(
+                                '${formatNumber(meter.tariff!.estimate(prev.consumption))} ${meter.tariff!.currency}',
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: Space.s),
+                    Row(children: [
+                      const Text('${S.costBasis}: '),
+                      NumericText('${meter.tariff!.tiers.length} ${S.tiersWord}'
+                          '${meter.tariff!.fixedFee > 0 ? ' + ${formatNumber(meter.tariff!.fixedFee)} ${meter.tariff!.currency}' : ''}'),
+                    ]),
+                    const SizedBox(height: Space.xs),
+                    Text(S.costNote, style: TextStyle(color: c.textSecondary, fontSize: 12)),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: Space.m),
             AppCard(
               child: Column(
