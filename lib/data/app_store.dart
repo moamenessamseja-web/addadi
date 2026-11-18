@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/app_data.dart';
 import '../domain/consumption.dart';
+import '../domain/csv_export.dart';
 import '../domain/language.dart';
 import '../domain/models.dart';
 import '../domain/notifications.dart';
@@ -11,13 +12,14 @@ import 'storage.dart';
 /// The single source of truth the UI listens to. Every change is written to local storage first;
 /// listeners are only notified after the write succeeded, so "saved on this device" is always true.
 class AppStore extends ChangeNotifier {
-  AppStore._(this._storage, this._data, this._notifications, this._textsBuilder);
+  AppStore._(this._storage, this._data, this._notifications, this._textsBuilder, this._exportSink);
 
   static const storageKey = 'addady.data.v1';
 
   final KeyValueStorage _storage;
   final NotificationCoordinator? _notifications;
   final NotificationTexts Function()? _textsBuilder;
+  final ExportSink? _exportSink;
   AppData _data;
   int _lastId = 0;
 
@@ -25,6 +27,7 @@ class AppStore extends ChangeNotifier {
     KeyValueStorage storage, {
     NotificationCoordinator? notifications,
     NotificationTexts Function()? notificationTexts,
+    ExportSink? exportSink,
   }) async {
     final raw = await storage.read(storageKey);
     var data = const AppData();
@@ -38,7 +41,7 @@ class AppStore extends ChangeNotifier {
       }
     }
     AppLanguage.code = data.language;
-    return AppStore._(storage, data, notifications, notificationTexts);
+    return AppStore._(storage, data, notifications, notificationTexts, exportSink);
   }
 
   List<Meter> get meters => List.unmodifiable(_data.meters);
@@ -152,6 +155,29 @@ class AppStore extends ChangeNotifier {
           ThemeMode.system => 'system',
         },
       ));
+
+  // ---- export ----------------------------------------------------------------------------------
+
+  /// Builds the CSV of every meter and reading and hands it to the OS share sheet.
+  /// [headers] are the 7 column titles in the active language.
+  Future<ExportOutcome> exportCsv({required List<String> headers, DateTime? now}) async {
+    final sink = _exportSink;
+    if (sink == null) return ExportOutcome.failed;
+    final byMeter = {for (final m in _data.meters) m.id: readingsOf(m.id)};
+    if (byMeter.values.every((r) => r.isEmpty)) return ExportOutcome.nothingToExport;
+    final d = now ?? DateTime.now();
+    final stamp = '${d.year.toString().padLeft(4, '0')}${d.month.toString().padLeft(2, '0')}${d.day.toString().padLeft(2, '0')}';
+    try {
+      await sink.shareFile(
+        filename: 'addady-readings-$stamp.csv',
+        content: buildCsv(meters: _data.meters, sortedReadingsByMeter: byMeter, headers: headers),
+        mimeType: 'text/csv',
+      );
+      return ExportOutcome.shared;
+    } catch (_) {
+      return ExportOutcome.failed;
+    }
+  }
 
   // ---- notifications -------------------------------------------------------------------------
 

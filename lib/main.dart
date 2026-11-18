@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'data/app_store.dart';
+import 'data/plugin_export.dart';
 import 'data/plugin_notifications.dart';
 import 'data/storage.dart';
 import 'domain/notifications.dart';
@@ -21,7 +22,12 @@ Future<void> main() async {
   try {
     final storage = await PrefsStorage.open();
     final coordinator = NotificationCoordinator(await _openNotifications(), notificationTexts());
-    final store = await AppStore.load(storage, notifications: coordinator, notificationTexts: notificationTexts);
+    final store = await AppStore.load(
+      storage,
+      notifications: coordinator,
+      notificationTexts: notificationTexts,
+      exportSink: const PluginExportSink(),
+    );
     await store.syncNotifications();
     runApp(EaddadyApp(store: store));
   } catch (_) {

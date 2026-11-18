@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/app_store.dart';
+import '../domain/csv_export.dart';
 import 'add_meter_sheet.dart';
 import 'edit_meter_page.dart';
 import 'strings.dart';
@@ -47,6 +48,20 @@ class AppDrawer extends StatelessWidget {
                 builder: (context, _) => NumericText('${store.thresholdPercent.round()}%'),
               ),
               onTap: () => showDialog<void>(context: context, builder: (_) => _ThresholdDialog(store: store)),
+            ),
+            ListTile(
+              leading: const Icon(Icons.file_download_outlined),
+              title: Text(S.exportTitle),
+              subtitle: Text(S.exportSubtitle),
+              onTap: () async {
+                final outcome = await store.exportCsv(
+                  headers: [S.csvMeter, S.csvUnit, S.csvDate, S.csvTime, S.csvReading, S.csvReset, S.csvConsumption],
+                );
+                if (!context.mounted || outcome == ExportOutcome.shared) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(outcome == ExportOutcome.nothingToExport ? S.exportNothing : S.exportFailed)),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.language),

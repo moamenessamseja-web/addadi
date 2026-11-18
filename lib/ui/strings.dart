@@ -119,6 +119,17 @@ class S {
   static String get languageArabic => _t('languageArabic');
   static String get languageEnglish => _t('languageEnglish');
   static String get defaultCurrency => _t('defaultCurrency');
+  static String get exportTitle => _t('exportTitle');
+  static String get exportSubtitle => _t('exportSubtitle');
+  static String get exportNothing => _t('exportNothing');
+  static String get exportFailed => _t('exportFailed');
+  static String get csvMeter => _t('csvMeter');
+  static String get csvUnit => _t('csvUnit');
+  static String get csvDate => _t('csvDate');
+  static String get csvTime => _t('csvTime');
+  static String get csvReading => _t('csvReading');
+  static String get csvReset => _t('csvReset');
+  static String get csvConsumption => _t('csvConsumption');
 
   // Texts with a number in them.
   static String chartSemantics(int periods) =>
@@ -238,5 +249,16 @@ class S {
     'languageArabic': ['العربية', 'العربية'],
     'languageEnglish': ['English', 'English'],
     'defaultCurrency': ['ج.م', 'EGP'],
+    'exportTitle': ['تصدير القراءات (CSV)', 'Export readings (CSV)'],
+    'exportSubtitle': ['ملف يُشارَك أو يُفتح في جداول البيانات', 'A file you can share or open in a spreadsheet'],
+    'exportNothing': ['لا توجد قراءات لتصديرها بعد.', 'There are no readings to export yet.'],
+    'exportFailed': ['تعذّر إنشاء الملف أو مشاركته.', 'Could not create or share the file.'],
+    'csvMeter': ['العداد', 'meter'],
+    'csvUnit': ['الوحدة', 'unit'],
+    'csvDate': ['التاريخ', 'date'],
+    'csvTime': ['الوقت', 'time'],
+    'csvReading': ['القراءة', 'reading'],
+    'csvReset': ['إعادة ضبط (1 = نعم)', 'reset (1 = yes)'],
+    'csvConsumption': ['استهلاك الفترة', 'period consumption'],
   };
 }

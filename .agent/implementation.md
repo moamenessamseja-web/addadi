@@ -42,6 +42,13 @@ Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's devi
 | Edit a meter (place, unit) | Implemented, not yet verified | store test; UI needs the owner's device |
 | Local tariff (progressive tiers, fixed fee, currency label) and the cost estimate on the Analytics screen | Implemented, not yet verified | sanity: 51 pure-Dart tests incl. tier boundaries; always labelled an estimate; hidden until a tariff is set |
 
+## 3d. Language and export (Phase 2)
+| Item | Status | Notes (evidence, build, limits) |
+|---|---|---|
+| Language selection, Arabic and English (live switch, direction follows, remembered) | Implemented, not yet verified | CI green (analyze, widget test of the switch); string table tested: every key has both languages; needs the owner's device |
+| CSV export of all readings through the Android share sheet | Implemented, not yet verified | CSV builder tested (BOM, quoting, formula neutralising, plain numbers); the share_plus plugin API/version could not be checked offline: CI is the first compile |
+| PDF export | Deferred by product decision | needs a bundled Arabic font and text shaping; not started |
+
 ## 4. Not in Phase 1
 | Item | Status | Notes (evidence, build, limits) |
 |---|---|---|
