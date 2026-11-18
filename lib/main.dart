@@ -20,8 +20,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     final storage = await PrefsStorage.open();
-    final coordinator = NotificationCoordinator(await _openNotifications(), arabicNotificationTexts);
-    final store = await AppStore.load(storage, notifications: coordinator);
+    final coordinator = NotificationCoordinator(await _openNotifications(), notificationTexts());
+    final store = await AppStore.load(storage, notifications: coordinator, notificationTexts: notificationTexts);
     await store.syncNotifications();
     runApp(EaddadyApp(store: store));
   } catch (_) {
@@ -29,7 +29,7 @@ Future<void> main() async {
     runApp(const MaterialApp(
       home: Directionality(
         textDirection: TextDirection.rtl,
-        child: Scaffold(body: Center(child: Text('تعذّر فتح التخزين المحلي على هذا الجهاز'))),
+        child: Scaffold(body: Center(child: Text('تعذّر فتح التخزين المحلي على هذا الجهاز\nCould not open local storage on this device', textAlign: TextAlign.center))),
       ),
     ));
   }

@@ -1,6 +1,7 @@
 /// Pure Dart (no Flutter imports): the data model of Ɛaddady.
 library;
 
+import 'language.dart';
 import 'tariff.dart';
 
 enum UtilityType { electricity, water, gas }
@@ -13,10 +14,11 @@ extension UtilityTypeInfo on UtilityType {
         UtilityType.gas => 'm³',
       };
 
-  String get labelAr => switch (this) {
-        UtilityType.electricity => 'كهرباء',
-        UtilityType.water => 'مياه',
-        UtilityType.gas => 'غاز',
+  /// Name of the utility in the active language.
+  String get label => switch (this) {
+        UtilityType.electricity => AppLanguage.isArabic ? 'كهرباء' : 'Electricity',
+        UtilityType.water => AppLanguage.isArabic ? 'مياه' : 'Water',
+        UtilityType.gas => AppLanguage.isArabic ? 'غاز' : 'Gas',
       };
 }
 
@@ -55,7 +57,7 @@ class Meter {
         tariff: clearTariff ? null : (tariff ?? this.tariff),
       );
 
-  String get title => place.trim().isEmpty ? type.labelAr : '${type.labelAr} — ${place.trim()}';
+  String get title => place.trim().isEmpty ? type.label : '${type.label} — ${place.trim()}';
 
   Map<String, Object?> toJson() => {
         'id': id,

@@ -10,7 +10,7 @@ class PluginNotificationBackend implements NotificationBackend {
   PluginNotificationBackend._();
 
   static const _channelId = 'addady_readings';
-  static const _channelName = 'تنبيهات القراءات';
+  static const _channelName = 'Readings alerts - تنبيهات القراءات';
 
   final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
 
@@ -24,7 +24,7 @@ class PluginNotificationBackend implements NotificationBackend {
       const AndroidNotificationChannel(
         _channelId,
         _channelName,
-        description: 'تنبيهات الزيادة الملحوظة في الاستهلاك وتذكير القراءات',
+        description: 'Notable-increase alerts and reading reminders - تنبيهات الزيادة الملحوظة وتذكير القراءات',
         importance: Importance.high,
       ),
     );

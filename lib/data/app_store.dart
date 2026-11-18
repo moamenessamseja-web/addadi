@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/app_data.dart';
 import '../domain/consumption.dart';
+import '../domain/language.dart';
 import '../domain/models.dart';
 import '../domain/notifications.dart';
 import '../domain/tariff.dart';
@@ -10,16 +11,21 @@ import 'storage.dart';
 /// The single source of truth the UI listens to. Every change is written to local storage first;
 /// listeners are only notified after the write succeeded, so "saved on this device" is always true.
 class AppStore extends ChangeNotifier {
-  AppStore._(this._storage, this._data, this._notifications);
+  AppStore._(this._storage, this._data, this._notifications, this._textsBuilder);
 
   static const storageKey = 'addady.data.v1';
 
   final KeyValueStorage _storage;
   final NotificationCoordinator? _notifications;
+  final NotificationTexts Function()? _textsBuilder;
   AppData _data;
   int _lastId = 0;
 
-  static Future<AppStore> load(KeyValueStorage storage, {NotificationCoordinator? notifications}) async {
+  static Future<AppStore> load(
+    KeyValueStorage storage, {
+    NotificationCoordinator? notifications,
+    NotificationTexts Function()? notificationTexts,
+  }) async {
     final raw = await storage.read(storageKey);
     var data = const AppData();
     if (raw != null && raw.isNotEmpty) {
@@ -31,7 +37,8 @@ class AppStore extends ChangeNotifier {
         data = decoded;
       }
     }
-    return AppStore._(storage, data, notifications);
+    AppLanguage.code = data.language;
+    return AppStore._(storage, data, notifications, notificationTexts);
   }
 
   List<Meter> get meters => List.unmodifiable(_data.meters);
@@ -47,6 +54,9 @@ class AppStore extends ChangeNotifier {
       sortedReadings(_data.readings.where((r) => r.meterId == meterId));
 
   double get thresholdPercent => _data.thresholdPercent;
+
+  /// 'ar' or 'en'.
+  String get language => _data.language;
 
   ThemeMode get themeMode => switch (_data.themeMode) {
         'light' => ThemeMode.light,
@@ -123,6 +133,18 @@ class AppStore extends ChangeNotifier {
 
   Future<void> setThresholdPercent(double percent) => _commit(_data.copyWith(thresholdPercent: percent));
 
+  Future<void> setLanguage(String code) async {
+    await _commit(_data.copyWith(language: code == 'en' ? 'en' : 'ar'));
+    final n = _notifications;
+    final builder = _textsBuilder;
+    if (n != null && builder != null) {
+      n.texts = builder();
+      try {
+        await syncNotifications();
+      } catch (_) {}
+    }
+  }
+
   Future<void> setThemeMode(ThemeMode mode) => _commit(_data.copyWith(
         themeMode: switch (mode) {
           ThemeMode.light => 'light',
@@ -198,6 +220,7 @@ class AppStore extends ChangeNotifier {
   Future<void> _commit(AppData next) async {
     await _storage.write(storageKey, next.encode());
     _data = next;
+    AppLanguage.code = next.language; // before listeners rebuild, so every text is already in the new language
     notifyListeners();
   }
 

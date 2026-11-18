@@ -35,7 +35,7 @@ class _EditMeterPageState extends State<EditMeterPage> {
   late final Meter? _meter = widget.store.meterById(widget.meterId);
   late final TextEditingController _place = TextEditingController(text: _meter?.place ?? '');
   late final TextEditingController _unit = TextEditingController(text: _meter?.unit ?? '');
-  late final TextEditingController _currency = TextEditingController(text: _meter?.tariff?.currency ?? 'ج.م');
+  late final TextEditingController _currency = TextEditingController(text: _meter?.tariff?.currency ?? S.defaultCurrency);
   late final TextEditingController _fee = TextEditingController(
     text: (_meter?.tariff?.fixedFee ?? 0) > 0 ? formatNumber(_meter!.tariff!.fixedFee, maxDecimals: 3) : '',
   );
@@ -139,10 +139,10 @@ class _EditMeterPageState extends State<EditMeterPage> {
   Widget build(BuildContext context) {
     final c = AppColors.of(context);
     final meter = _meter;
-    if (meter == null) return Scaffold(appBar: AppBar(title: const Text(S.editMeter)));
+    if (meter == null) return Scaffold(appBar: AppBar(title: Text(S.editMeter)));
     const numberKeyboard = TextInputType.numberWithOptions(decimal: true);
     return Scaffold(
-      appBar: AppBar(title: Text('${S.editMeter}: ${meter.type.labelAr}')),
+      appBar: AppBar(title: Text('${S.editMeter}: ${meter.type.label}')),
       body: ListView(
         padding: const EdgeInsets.all(Space.l),
         children: [
@@ -153,8 +153,8 @@ class _EditMeterPageState extends State<EditMeterPage> {
           Text(S.tariffSection, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text(S.tariffEnable),
-            subtitle: const Text(S.tariffHelper),
+            title: Text(S.tariffEnable),
+            subtitle: Text(S.tariffHelper),
             value: _tariffOn,
             onChanged: (v) => setState(() => _tariffOn = v),
           ),
@@ -183,7 +183,7 @@ class _EditMeterPageState extends State<EditMeterPage> {
                     child: i == _tiers.length - 1
                         ? InputDecorator(
                             decoration: _decoration(S.tierUpTo),
-                            child: const Text(S.tierRest),
+                            child: Text(S.tierRest),
                           )
                         : TextField(
                             controller: _tiers[i].upTo,
@@ -219,7 +219,7 @@ class _EditMeterPageState extends State<EditMeterPage> {
               child: TextButton.icon(
                 onPressed: () => setState(() => _tiers.insert(_tiers.length - 1, _TierFields())),
                 icon: const Icon(Icons.add),
-                label: const Text(S.addTier),
+                label: Text(S.addTier),
               ),
             ),
           ],
@@ -230,7 +230,7 @@ class _EditMeterPageState extends State<EditMeterPage> {
           const SizedBox(height: Space.xl),
           FilledButton(
             onPressed: _saving ? null : _save,
-            child: const Padding(padding: EdgeInsets.symmetric(vertical: Space.m), child: Text(S.saveMeter)),
+            child: Padding(padding: EdgeInsets.symmetric(vertical: Space.m), child: Text(S.saveMeter)),
           ),
         ],
       ),

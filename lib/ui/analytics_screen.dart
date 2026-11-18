@@ -52,7 +52,7 @@ class AnalyticsScreen extends StatelessWidget {
         return ListView(
           padding: const EdgeInsets.all(Space.l),
           children: [
-            const Text(S.selectMeter, style: TextStyle(fontWeight: FontWeight.w700)),
+            Text(S.selectMeter, style: TextStyle(fontWeight: FontWeight.w700)),
             const SizedBox(height: Space.s),
             Wrap(
               spacing: Space.s,
@@ -72,7 +72,7 @@ class AnalyticsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(S.currentComparison, style: TextStyle(fontWeight: FontWeight.w700)),
+                  Text(S.currentComparison, style: TextStyle(fontWeight: FontWeight.w700)),
                   const SizedBox(height: Space.m),
                   if (cur == null)
                     Text(S.notEnoughHistory, style: TextStyle(color: c.textSecondary))
@@ -139,7 +139,7 @@ class AnalyticsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(S.costEstimate, style: TextStyle(fontWeight: FontWeight.w700)),
+                    Text(S.costEstimate, style: TextStyle(fontWeight: FontWeight.w700)),
                     const SizedBox(height: Space.m),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +167,7 @@ class AnalyticsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: Space.s),
                     Row(children: [
-                      const Text('${S.costBasis}: '),
+                      Text('${S.costBasis}: '),
                       NumericText('${meter.tariff!.tiers.length} ${S.tiersWord}'
                           '${meter.tariff!.fixedFee > 0 ? ' + ${formatNumber(meter.tariff!.fixedFee)} ${meter.tariff!.currency}' : ''}'),
                     ]),
@@ -182,7 +182,7 @@ class AnalyticsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(S.monthlyChart, style: TextStyle(fontWeight: FontWeight.w700)),
+                  Text(S.monthlyChart, style: TextStyle(fontWeight: FontWeight.w700)),
                   const SizedBox(height: Space.m),
                   if (periods.length < 2)
                     Text(S.notEnoughHistory, style: TextStyle(color: c.textSecondary))

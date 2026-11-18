@@ -47,7 +47,7 @@ class _AddMeterFormState extends State<_AddMeterForm> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(S.saveFailed)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.saveFailed)));
     }
   }
 
@@ -61,7 +61,7 @@ class _AddMeterFormState extends State<_AddMeterForm> {
         children: [
           Text(S.addMeterTitle, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: Space.l),
-          const Text(S.meterType),
+          Text(S.meterType),
           const SizedBox(height: Space.s),
           Wrap(
             spacing: Space.s,
@@ -69,7 +69,7 @@ class _AddMeterFormState extends State<_AddMeterForm> {
               for (final t in UtilityType.values)
                 ChoiceChip(
                   avatar: Icon(utilityIcon(t), size: 18),
-                  label: Text(t.labelAr),
+                  label: Text(t.label),
                   selected: _type == t,
                   onSelected: (_) => setState(() {
                     _type = t;
@@ -100,7 +100,7 @@ class _AddMeterFormState extends State<_AddMeterForm> {
             width: double.infinity,
             child: FilledButton(
               onPressed: _saving ? null : _save,
-              child: const Padding(padding: EdgeInsets.symmetric(vertical: Space.m), child: Text(S.addMeter)),
+              child: Padding(padding: EdgeInsets.symmetric(vertical: Space.m), child: Text(S.addMeter)),
             ),
           ),
         ],

@@ -84,7 +84,7 @@ class UtilityBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = AppColors.of(context).utility(type);
     return Semantics(
-      label: type.labelAr,
+      label: type.label,
       child: Container(
         width: size,
         height: size,
