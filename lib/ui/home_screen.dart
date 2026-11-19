@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
           action: FilledButton.icon(
             onPressed: () => showAddMeterSheet(context, store),
             icon: const Icon(Icons.add),
-            label: const Text(S.addMeter),
+            label: Text(S.addMeter),
           ),
         ),
         const SizedBox(height: Space.m),
@@ -106,7 +106,7 @@ class _Overview extends StatelessWidget {
             children: [
               UtilityBadge(type, size: 36),
               const SizedBox(height: Space.s),
-              Text(type.labelAr, style: const TextStyle(fontWeight: FontWeight.w700)),
+              Text(type.label, style: const TextStyle(fontWeight: FontWeight.w700)),
               const SizedBox(height: 2),
               Row(children: [
                 NumericText('${ofType.length}', style: const TextStyle(fontWeight: FontWeight.w700)),
@@ -189,7 +189,7 @@ class MeterCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
-              Icon(Icons.chevron_left, color: c.textSecondary),
+              Icon(Directionality.of(context) == TextDirection.rtl ? Icons.chevron_left : Icons.chevron_right, color: c.textSecondary),
             ],
           ),
           const SizedBox(height: Space.m),
@@ -251,8 +251,8 @@ class MeterCard extends StatelessWidget {
           const SizedBox(height: Space.s),
           Row(
             children: [
-              TextButton.icon(onPressed: onAddReading, icon: const Icon(Icons.add_circle_outline), label: const Text(S.addReadingAction)),
-              TextButton.icon(onPressed: onOpenAnalytics, icon: const Icon(Icons.show_chart), label: const Text(S.analyticsAction)),
+              TextButton.icon(onPressed: onAddReading, icon: const Icon(Icons.add_circle_outline), label: Text(S.addReadingAction)),
+              TextButton.icon(onPressed: onOpenAnalytics, icon: const Icon(Icons.show_chart), label: Text(S.analyticsAction)),
             ],
           ),
         ],

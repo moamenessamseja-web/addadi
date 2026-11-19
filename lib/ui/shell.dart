@@ -104,7 +104,7 @@ class _ShellState extends State<Shell> {
             foregroundColor: c.textPrimary,
             elevation: 0,
             scrolledUnderElevation: 0,
-            title: const Text(S.appName, style: TextStyle(fontWeight: FontWeight.w800)),
+            title: Text(S.appName, style: TextStyle(fontWeight: FontWeight.w800)),
             actions: [
               IconButton(
                 tooltip: S.bellTooltip,
@@ -142,7 +142,7 @@ class _ShellState extends State<Shell> {
             backgroundColor: c.surface,
             selectedIndex: _tab,
             onDestinationSelected: (i) => setState(() => _tab = i),
-            destinations: const [
+            destinations: [
               NavigationDestination(icon: Icon(Icons.speed), label: S.tabMeters),
               NavigationDestination(icon: Icon(Icons.add_circle_outline), selectedIcon: Icon(Icons.add_circle), label: S.tabAddReading),
               NavigationDestination(icon: Icon(Icons.show_chart), label: S.tabAnalytics),

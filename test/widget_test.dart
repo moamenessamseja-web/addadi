@@ -1,7 +1,8 @@
-import 'package:eaddady/app.dart';
-import 'package:eaddady/data/app_store.dart';
-import 'package:eaddady/data/storage.dart';
-import 'package:eaddady/domain/models.dart';
+import 'package:addady/app.dart';
+import 'package:addady/data/app_store.dart';
+import 'package:addady/data/storage.dart';
+import 'package:addady/domain/language.dart';
+import 'package:addady/domain/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -44,5 +45,24 @@ void main() {
     final problem = await store.addReading(meterId: meter.id, value: 100, at: DateTime(2026, 11, 1), isReset: false);
     expect(problem, isNotNull);
     expect(store.readingsOf(meter.id).length, 1);
+  });
+
+  testWidgets('switching the language to English flips the texts and the direction, and it is remembered', (tester) async {
+    addTearDown(() => AppLanguage.code = 'ar');
+    final storage = MemoryStorage();
+    final store = await AppStore.load(storage);
+    await tester.pumpWidget(EaddadyApp(store: store));
+    await tester.pumpAndSettle();
+    expect(find.text('عداداتي'), findsOneWidget);
+
+    await store.setLanguage('en');
+    await tester.pumpAndSettle();
+    expect(find.text('My meters'), findsOneWidget);
+    expect(find.text('Add meter'), findsOneWidget);
+    expect(Directionality.of(tester.element(find.text('My meters'))), TextDirection.ltr);
+
+    final reloaded = await AppStore.load(storage);
+    expect(reloaded.language, 'en');
+    expect(AppLanguage.code, 'en');
   });
 }

@@ -63,11 +63,11 @@ class _AddReadingScreenState extends State<AddReadingScreen> {
       final ok = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text(S.resetConfirmTitle),
-          content: const Text(S.resetConfirmBody),
+          title: Text(S.resetConfirmTitle),
+          content: Text(S.resetConfirmBody),
           actions: [
-            TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: const Text(S.cancel)),
-            FilledButton(onPressed: () => Navigator.of(ctx).pop(true), child: const Text(S.confirm)),
+            TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(S.cancel)),
+            FilledButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(S.confirm)),
           ],
         ),
       );
@@ -91,11 +91,11 @@ class _AddReadingScreenState extends State<AddReadingScreen> {
         _reset = false;
         _at = DateTime.now();
       });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(S.savedOnDevice)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.savedOnDevice)));
     } catch (_) {
       if (!mounted) return;
       setState(() => _saving = false);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(S.saveFailed)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.saveFailed)));
     }
   }
 
@@ -128,7 +128,7 @@ class _AddReadingScreenState extends State<AddReadingScreen> {
         return ListView(
           padding: const EdgeInsets.all(Space.l),
           children: [
-            const Text(S.chooseMeter, style: TextStyle(fontWeight: FontWeight.w700)),
+            Text(S.chooseMeter, style: TextStyle(fontWeight: FontWeight.w700)),
             const SizedBox(height: Space.s),
             Wrap(
               spacing: Space.s,
@@ -192,7 +192,7 @@ class _AddReadingScreenState extends State<AddReadingScreen> {
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('${S.readingDateTime}: '),
+                  Text('${S.readingDateTime}: '),
                   NumericText('${formatDate(_at)}  ${formatTime(_at)}'),
                 ],
               ),
@@ -200,8 +200,8 @@ class _AddReadingScreenState extends State<AddReadingScreen> {
             const SizedBox(height: Space.s),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text(S.resetToggle),
-              subtitle: const Text(S.resetHelper),
+              title: Text(S.resetToggle),
+              subtitle: Text(S.resetHelper),
               value: _reset,
               onChanged: (v) => setState(() => _reset = v),
             ),
@@ -226,7 +226,7 @@ class _AddReadingScreenState extends State<AddReadingScreen> {
             const SizedBox(height: Space.l),
             FilledButton(
               onPressed: canSave ? () => _save(meter) : null,
-              child: const Padding(padding: EdgeInsets.symmetric(vertical: Space.m), child: Text(S.save)),
+              child: Padding(padding: EdgeInsets.symmetric(vertical: Space.m), child: Text(S.save)),
             ),
             if (_savedMeter != null && _savedAnalysis != null) ...[
               const SizedBox(height: Space.l),
@@ -257,7 +257,7 @@ class _SavedCard extends StatelessWidget {
           Row(children: [
             Icon(Icons.check_circle, color: c.success),
             const SizedBox(width: Space.s),
-            const Expanded(child: Text(S.savedOnDevice, style: TextStyle(fontWeight: FontWeight.w700))),
+            Expanded(child: Text(S.savedOnDevice, style: TextStyle(fontWeight: FontWeight.w700))),
           ]),
           if (cur != null) ...[
             const SizedBox(height: Space.m),

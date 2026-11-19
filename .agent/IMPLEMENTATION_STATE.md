@@ -1,28 +1,34 @@
-# IMPLEMENTATION_STATE.md — current checkpoint (2026-11-15)
+# IMPLEMENTATION_STATE.md — current checkpoint (2026-11-16)
 
-Older detail lives in `archive/`. Rules: `ENGINEERING_RULES.md`. Per-feature statuses: `implementation.md`.
+**STATUS: PAUSED by the owner after Phase 2.** Nothing is in progress and no branch is open. To resume read `HANDOFF.md` first.
+Older detail: `archive/2026-11-15_phase1_state.md`. Rules: `ENGINEERING_RULES.md`. Per-feature statuses: `implementation.md`.
 
-## Baselines and branches
-- Default branch `main`: 0e89188 (owner merged PR #1 on 2026-11-16; contains the Phase 1 app). CI green on main (push build, same code as 39fbc54). Not device-tested.
-- Working branches: none open. Next work starts from `main` on a new `agent/<task>` branch.
-- Rollback tags: none.
+## Baselines
+- `main` = Phase 1 + Phase 2, merged at the owner's approval on 2026-11-16 (see `git log` or the tag `phase2-paused-2026-11-16`).
+- The last code change is commit `5520f0b3886dab010e7cc216b11439d11c49c978`. The owner installed the APK built from it (artifact `android-apk` of that CI run) and approved the result overall. Every later commit changes documentation only.
+- applicationId `com.moamen.addady`, Flutter 3.47.9 pinned in `.github/workflows/build-apk.yml`, gateway `Flutter-Android-Build@v1.0.0`.
 
-## This session (2026-11-15)
-- Changed (and why): created the Flutter app from nothing, following README + design foundation; pure-Dart domain first (tested), then storage, then UI.
-- Verified — and HOW: domain unit tests executed locally with plain Dart (sanity, 25 passed). Flutter code was not compiled locally (no Flutter SDK in the authoring sandbox); CI (Flutter 3.47.9) compiled it first time: analyze clean, 28 tests passed, release APK built (CI level). The APK was not opened or run by anyone yet.
-- NOT verified: everything that needs a phone (layout, Arabic wrapping, RTL feel, real Android storage, date/time picker digits, dark mode).
-- Corrections of earlier wrong claims: none yet.
+## What exists (Phase 1 + Phase 2)
+Meters (electricity, water, gas; place; unit), readings with a reset/replacement tag, consumption per period, spike detection against a threshold, in-app alert bell, home / add-reading / analytics screens, drawer (meter management and editing, local tariff and cost estimate, alert threshold, local notifications switch, language Arabic/English, theme, CSV export). 100% local, no accounts, no network use. Local notifications: spike alert once per latest reading, "reading due" reminder 30 days after the latest reading at 09:00.
 
-## Needs owner device test (not verifiable in CI)
-1. Add an electricity meter, enter three readings with a rising consumption; check the card, the percentage and the bell.
-2. Enter a lower reading without the reset tag (must be refused) and with it (must be accepted, history break shown).
-3. Arabic text wrapping, numbers left-to-right, dark mode, large system font.
-4. Close and reopen the app: data must still be there. Airplane mode: everything must work.
+## What does NOT exist (honest list)
+Photo evidence per reading · PDF export · bundled Arabic font (system font is used) · release signing (shared debug key) · `LICENSE` file (the README refers to one) · committed `pubspec.lock` (cannot be produced without Flutter) · exact pin of `share_plus` (currently `^11.0.0`).
+
+## Verification levels reached
+- Sanity: 61 pure-Dart tests run locally with a plain Dart SDK (domain logic, notification planning, tariff, CSV, strings, language).
+- CI (GitHub Actions): every commit compiled, analyzed (clean) and tested (15 Flutter-dependent tests run only there), then built a release APK. Last green: 5520f0b.
+- Owner's device: installed 5520f0b, approved overall ("رائع"). Item-by-item device results (real notification delivery, reminder after a reboot, share sheet and CSV in a spreadsheet app, English layout, cost estimate with a real tariff) were NOT reported, so those items stay "Implemented, not yet verified" in `implementation.md`.
 
 ## Open items / next (priority order)
-1. Owner: confirm the applicationId `com.moamen.eaddady` before the first install (DECISIONS 1).
-2. Owner feedback on the first build, then Phase 2 candidates: photo evidence, notifications, export, tariff.
+1. Owner: report which Phase 2 features behave on the phone (see the test list in `HANDOFF.md`).
+2. Photo evidence per reading (needs design decisions 6 and 7).
+3. PDF export (needs a bundled Arabic font and text shaping).
+4. Card/widget sizes differ from the design (owner feedback; the design skills are being reviewed in another conversation).
+5. Housekeeping: pin `share_plus` exactly, commit a `pubspec.lock` (generate it where Flutter is available or from CI), add the `LICENSE` the README mentions (the owner decides the license).
+6. Release signing and publication later.
 
 ## Build log
-1 Phase 1 first build · green (39fbc54, PR)
-2 Phase 1 on main · green (0e89188, push after the owner merge) — this is the build to install
+1 first build · green · 39fbc54 (PR) · package com.moamen.eaddady (obsolete)
+2 Phase 1 on main · green · 0e89188 (owner merge) and b2d6f57 (docs)
+3 Phase 2 · green · 57dc072 (notifications + rename to addady), a77ea47 (tariff), e9fb982 (language), 5520f0b (export) — the owner's installed build
+4 closing documentation commits and the merge into main · see `CHANGELOG.md`

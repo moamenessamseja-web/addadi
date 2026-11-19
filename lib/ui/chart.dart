@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/format.dart';
+import 'strings.dart';
 import 'tokens.dart';
 
 class ChartPoint {
@@ -23,7 +24,7 @@ class ConsumptionChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = AppColors.of(context);
     return Semantics(
-      label: 'رسم بياني للاستهلاك، ${points.length} فترات',
+      label: S.chartSemantics(points.length),
       child: SizedBox(
         height: height,
         width: double.infinity,

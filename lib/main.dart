@@ -2,20 +2,40 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'data/app_store.dart';
+import 'data/plugin_export.dart';
+import 'data/plugin_notifications.dart';
 import 'data/storage.dart';
+import 'domain/notifications.dart';
+import 'ui/notification_texts.dart';
+
+Future<NotificationBackend> _openNotifications() async {
+  try {
+    return await PluginNotificationBackend.create();
+  } catch (_) {
+    // The app works without notifications; settings explain that they are unavailable.
+    return const NoopNotificationBackend();
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     final storage = await PrefsStorage.open();
-    final store = await AppStore.load(storage);
+    final coordinator = NotificationCoordinator(await _openNotifications(), notificationTexts());
+    final store = await AppStore.load(
+      storage,
+      notifications: coordinator,
+      notificationTexts: notificationTexts,
+      exportSink: const PluginExportSink(),
+    );
+    await store.syncNotifications();
     runApp(EaddadyApp(store: store));
   } catch (_) {
     // Without local storage nothing can be saved, so say so instead of showing a blank screen.
     runApp(const MaterialApp(
       home: Directionality(
         textDirection: TextDirection.rtl,
-        child: Scaffold(body: Center(child: Text('تعذّر فتح التخزين المحلي على هذا الجهاز'))),
+        child: Scaffold(body: Center(child: Text('تعذّر فتح التخزين المحلي على هذا الجهاز\nCould not open local storage on this device', textAlign: TextAlign.center))),
       ),
     ));
   }

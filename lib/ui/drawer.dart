@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../data/app_store.dart';
+import '../domain/csv_export.dart';
 import 'add_meter_sheet.dart';
+import 'edit_meter_page.dart';
 import 'strings.dart';
 import 'tokens.dart';
 import 'widgets.dart';
@@ -32,7 +34,7 @@ class AppDrawer extends StatelessWidget {
             const Divider(height: 1),
             ListTile(
               leading: const Icon(Icons.speed),
-              title: const Text(S.manageMeters),
+              title: Text(S.manageMeters),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ManageMetersPage(store: store)));
@@ -40,7 +42,7 @@ class AppDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.trending_up),
-              title: const Text(S.alertThreshold),
+              title: Text(S.alertThreshold),
               subtitle: ListenableBuilder(
                 listenable: store,
                 builder: (context, _) => NumericText('${store.thresholdPercent.round()}%'),
@@ -48,12 +50,79 @@ class AppDrawer extends StatelessWidget {
               onTap: () => showDialog<void>(context: context, builder: (_) => _ThresholdDialog(store: store)),
             ),
             ListTile(
+              leading: const Icon(Icons.file_download_outlined),
+              title: Text(S.exportTitle),
+              subtitle: Text(S.exportSubtitle),
+              onTap: () async {
+                final outcome = await store.exportCsv(
+                  headers: [S.csvMeter, S.csvUnit, S.csvDate, S.csvTime, S.csvReading, S.csvReset, S.csvConsumption],
+                );
+                if (!context.mounted || outcome == ExportOutcome.shared) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(outcome == ExportOutcome.nothingToExport ? S.exportNothing : S.exportFailed)),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.language),
+              title: Text(S.languageTitle),
+              subtitle: ListenableBuilder(
+                listenable: store,
+                builder: (context, _) => Text(store.language == 'en' ? S.languageEnglish : S.languageArabic),
+              ),
+              onTap: () => showDialog<void>(context: context, builder: (_) => _LanguageDialog(store: store)),
+            ),
+            _NotificationsTile(store: store),
+            ListTile(
               leading: const Icon(Icons.brightness_6),
-              title: const Text(S.theme),
+              title: Text(S.theme),
               onTap: () => showDialog<void>(context: context, builder: (_) => _ThemeDialog(store: store)),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _NotificationsTile extends StatelessWidget {
+  const _NotificationsTile({required this.store});
+
+  final AppStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: store,
+      builder: (context, _) => FutureBuilder<bool>(
+        future: store.notificationsPermitted(),
+        builder: (context, snapshot) {
+          final permitted = snapshot.data ?? false;
+          final enabled = store.notificationsEnabled;
+          final String status;
+          if (!enabled) {
+            status = S.notificationsOff;
+          } else if (!permitted) {
+            status = S.notificationsBlocked;
+          } else if (store.notificationError != null) {
+            status = S.notificationsError;
+          } else {
+            status = S.notificationsOn;
+          }
+          return SwitchListTile(
+            secondary: const Icon(Icons.notifications_active_outlined),
+            title: Text(S.notificationsTitle),
+            subtitle: Text(status),
+            value: enabled,
+            onChanged: (value) async {
+              final allowed = await store.setNotificationsEnabled(value);
+              if (!context.mounted) return;
+              if (value && !allowed) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.notificationsBlocked)));
+              }
+            },
+          );
+        },
       ),
     );
   }
@@ -74,7 +143,7 @@ class _ThresholdDialogState extends State<_ThresholdDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(S.alertThreshold),
+      title: Text(S.alertThreshold),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,16 +162,41 @@ class _ThresholdDialogState extends State<_ThresholdDialog> {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text(S.cancel)),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(S.cancel)),
         FilledButton(
           onPressed: () async {
             await widget.store.setThresholdPercent(_value);
             if (!context.mounted) return;
             Navigator.of(context).pop();
           },
-          child: const Text(S.saveSetting),
+          child: Text(S.saveSetting),
         ),
       ],
+    );
+  }
+}
+
+class _LanguageDialog extends StatelessWidget {
+  const _LanguageDialog({required this.store});
+
+  final AppStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(S.languageTitle),
+      content: ListenableBuilder(
+        listenable: store,
+        builder: (context, _) => SegmentedButton<String>(
+          segments: [
+            ButtonSegment<String>(value: 'ar', label: Text(S.languageArabic)),
+            ButtonSegment<String>(value: 'en', label: Text(S.languageEnglish)),
+          ],
+          selected: {store.language},
+          onSelectionChanged: (s) => store.setLanguage(s.first),
+        ),
+      ),
+      actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(S.close))],
     );
   }
 }
@@ -115,11 +209,11 @@ class _ThemeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(S.theme),
+      title: Text(S.theme),
       content: ListenableBuilder(
         listenable: store,
         builder: (context, _) => SegmentedButton<ThemeMode>(
-          segments: const [
+          segments: [
             ButtonSegment<ThemeMode>(value: ThemeMode.system, label: Text(S.themeSystem)),
             ButtonSegment<ThemeMode>(value: ThemeMode.light, label: Text(S.themeLight)),
             ButtonSegment<ThemeMode>(value: ThemeMode.dark, label: Text(S.themeDark)),
@@ -128,7 +222,7 @@ class _ThemeDialog extends StatelessWidget {
           onSelectionChanged: (s) => store.setThemeMode(s.first),
         ),
       ),
-      actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text(S.close))],
+      actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(S.close))],
     );
   }
 }
@@ -142,11 +236,11 @@ class ManageMetersPage extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text(S.deleteConfirmTitle),
-        content: const Text(S.deleteConfirmBody),
+        title: Text(S.deleteConfirmTitle),
+        content: Text(S.deleteConfirmBody),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: const Text(S.cancel)),
-          FilledButton(onPressed: () => Navigator.of(ctx).pop(true), child: const Text(S.delete)),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(S.cancel)),
+          FilledButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(S.delete)),
         ],
       ),
     );
@@ -157,11 +251,11 @@ class ManageMetersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = AppColors.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text(S.manageMeters)),
+      appBar: AppBar(title: Text(S.manageMeters)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showAddMeterSheet(context, store),
         icon: const Icon(Icons.add),
-        label: const Text(S.addMeter),
+        label: Text(S.addMeter),
       ),
       body: ListenableBuilder(
         listenable: store,
@@ -176,13 +270,20 @@ class ManageMetersPage extends StatelessWidget {
               for (final m in meters)
                 ListTile(
                   leading: UtilityBadge(m.type, size: 40),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => EditMeterPage(store: store, meterId: m.id))),
                   title: Text(m.title),
                   subtitle: Row(children: [
                     NumericText(m.unit),
                     const SizedBox(width: Space.m),
                     NumericText('${store.readingsOf(m.id).length}'),
                     const SizedBox(width: Space.xs),
-                    const Text(S.meterReadingsCount),
+                    Text(S.meterReadingsCount),
+                    if (m.tariff != null) ...[
+                      const SizedBox(width: Space.m),
+                      Icon(Icons.request_quote_outlined, size: 14, color: c.textSecondary),
+                      const SizedBox(width: Space.xs),
+                      Text(S.tariffSet),
+                    ],
                   ]),
                   trailing: IconButton(
                     tooltip: S.deleteMeter,

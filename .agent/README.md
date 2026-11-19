@@ -1,6 +1,6 @@
 # .agent/ — start here (every session, human or AI)
 
-Project: **Ɛaddady** · Owner: the owner · Stack: Flutter/Android · Bootstrapped: 2026-11-15
+Project: **Ɛaddady** · Owner: the owner · Stack: Flutter/Android · Bootstrapped: 2026-11-15 · **STATUS: PAUSED since 2026-11-16 (Phase 2 finished, merged into main). Start with `HANDOFF.md`.**
 
 This folder is the project's memory. Sessions die without warning and context gets cleared, so **anything not written here is lost**.
 Read in this order; update the marked files after every green build / verified step.
@@ -16,7 +16,7 @@ Read in this order; update the marked files after every green build / verified s
 | 7 | `CHANGELOG.md` | What actually changed (completed work, with build numbers, red/green) | **every green build** |
 | 8 | `LESSONS.md` | Symptom → real cause → action (evidence-based) | after any red/surprise |
 | 9 | `DECISIONS.md` | Owner decisions + frozen/out-of-scope items + open decisions | owner decides / freezes |
-| 10 | `archive/` | Superseded docs, each with an ARCHIVED banner. Never delete history | when a doc is replaced |
+| 10 | `archive/` | Superseded docs, each with an ARCHIVED banner. Never delete history (now: `2026-11-15_phase1_state.md`) | when a doc is replaced |
 
 Non-negotiables: never claim verification that did not happen · keep verification levels separate (read < sanity < CI < artifact < owner's device) ·
 secrets never in the repo · a screen that does not persist/schedule/show real data is **not** a finished feature · reuse existing components.
