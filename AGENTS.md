@@ -1,5 +1,7 @@
 # Agent instructions
 
+> **PROJECT STATUS: PAUSED (2026-11-16).** Phase 1 and Phase 2 are finished and merged into `main`. To resume, read `.agent/HANDOFF.md` first, then `.agent/IMPLEMENTATION_STATE.md`. Nothing is in progress.
+
 Before any work in this repository, use the central engineering gateway:
 1. `git clone --depth 1 https://github.com/moamenessamseja-web/Flutter-Android-Build.git /tmp/gateway`
 2. Read `/tmp/gateway/.agent/README.md` and follow it (it points to the Engineering in Charge skill, which you must read first), then `/tmp/gateway/.agent/RUN.md` for the delivery recipe.
@@ -26,4 +28,5 @@ You cannot run the gate scripts in that mode; HTTP_ONLY.md defines the API equiv
 - applicationId: `com.moamen.addady`. It cannot change after the owner installed an APK.
 - Flutter is pinned in `.github/workflows/build-apk.yml` (3.47.9). `pubspec.lock` cannot be created without Flutter; keep dependency versions deliberate.
 - Pure-Dart domain logic lives in `lib/domain/` (no Flutter imports) so it can be tested without a device; keep it that way.
+- Features present: local notifications, meter configuration with a local tariff, Arabic/English, CSV export. Native Android setup (notification permissions, receivers, desugaring, R8 rules) is injected by `tool/ci_android.sh`; the strings are getters over one bilingual table (no `const Text(S.x)`).
 - `.agent/HTTP_ONLY.md` is a copy of the gateway file of the same name.

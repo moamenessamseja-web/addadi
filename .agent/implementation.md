@@ -4,6 +4,8 @@ Statuses (use ONLY these, never promote without evidence): **Verified complete**
 **Not started** · **Blocked** · **Deferred by product decision**.
 Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's device*. "Verified complete" needs the owner's device for anything user-facing.
 
+Owner's device evidence so far: Phase 1 build was installed and tested by the owner (everything functional; card/widget sizes differ from the design). The Phase 2 build 5520f0b was installed and approved overall, without item-level results, so Phase 2 items keep the status below until the owner reports them.
+
 ## 1. Domain logic (pure Dart)
 | Item | Status | Notes (evidence, build, limits) |
 |---|---|---|
@@ -49,17 +51,21 @@ Evidence levels: *read* < *sanity* < *CI* < *artifact inspected* < *owner's devi
 | CSV export of all readings through the Android share sheet | Implemented, not yet verified | CSV builder tested (BOM, quoting, formula neutralising, plain numbers); the share_plus plugin API/version could not be checked offline: CI is the first compile |
 | PDF export | Deferred by product decision | needs a bundled Arabic font and text shaping; not started |
 
-## 4. Not in Phase 1
+## 4. Not built yet
 | Item | Status | Notes (evidence, build, limits) |
 |---|---|---|
 | Photo evidence per reading | Not started | needs decisions 6 and 7 (camera/gallery, export) |
-| CSV / PDF export | Not started | |
-| Local tariff and cost estimate | Not started | needs decision 4 (tariff representation) |
-| Language selection | Deferred by product decision | Arabic only until the owner asks |
-| Bundled Arabic font | Not started | design asks to confirm availability first |
-| Release signing | Deferred by product decision | debug key for now |
+| PDF export | Deferred by product decision | needs a bundled Arabic font and text shaping |
+| Bundled Arabic font | Not started | design asks to confirm availability first; the system font is used |
+| Release signing | Deferred by product decision | the shared debug key is used |
+| LICENSE file | Not started | the README refers to it; the owner decides the license |
+| Committed pubspec.lock and exact share_plus pin | Not started | needs Flutter or a CI helper to resolve versions |
 
 ## Verification log
 | Build | Commit | CI | Device |
 |---|---|---|---|
-| 1 | 39fbc54 | green: analyze (no warnings), 28 tests (25 domain + 3 widget), release APK 53 MB, package com.moamen.eaddady | not device-tested |
+| 4 | closing docs + merge | green (docs only) | not applicable |
+| 3 | 5520f0b | green: analyze, all tests, release APK 55 MB, package com.moamen.addady (Phase 2: notifications, tariff, language, export) | owner installed it and approved overall (2026-11-16); item-level results not reported |
+| 3 | e9fb982, a77ea47, 57dc072 | green (earlier Phase 2 commits) | not device-tested separately |
+| 2 | 0e89188 / b2d6f57 | green on main (Phase 1) | obsolete package com.moamen.eaddady |
+| 1 | 39fbc54 | green: analyze, 28 tests, release APK 53 MB, package com.moamen.eaddady | owner installed it, followed the suggested test list, reported everything functional and the design close, except card/widget sizes vs the design |

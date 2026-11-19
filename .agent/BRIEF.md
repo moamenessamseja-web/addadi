@@ -21,3 +21,8 @@
 > المطلوب منك ان تكمل الخطوات ابتداءً من الاشعارات ثم باقي عناصر القائمة الجانبية، تغيير اسم الحزمة الي addady.. سأمسح ال apk من فوني ونبدأ من جديد.. انا لم ادمج اي فرع علي ال main
 
 **Reading:** Phase 1 accepted functionally. Phase 2 order: (1) local notifications, (2) the remaining drawer items (meter configuration + local tariff, language, export), (3) package name `addady`. The owner deletes the old APK and starts fresh. Card/widget size differs from the design (design skills are being reviewed elsewhere; out of scope here). The owner has NOT merged anything: do not merge; leave the PR for the owner.
+
+## 2026-11-16 — closing the project for now
+> انا نزلت apk مانيوال من commit: 5520f0b3886dab010e7cc216b11439d11c49c978 — رائع احسنت. حدث ملفات (agent.) بما تم وبما لم يتم, ونظم ملفات المشروع كاملة لاننا سنتركه مدة ما. اغلق ملف عدادي بحيث عندما نعود اليه من (محادثة اخري مشروع منفصل لكلاود) نبقي عارفين احنا وقفنا فين. لأننا سنعمل علي اعادة تحسين Flutter-App-Template بكل الدروس المستفادة في هذه المحادثة الأم. ولكن ركز الان علي تمام تقفيل عدادي
+
+**Reading:** the owner installed the Phase 2 APK and is satisfied overall. The project is paused; the next work on it will come from another conversation (a separate Claude project). In parallel the owner will improve `Flutter-App-Template` using the lessons of this conversation: they are collected in `LESSONS.md` (section "Backlog for Flutter-App-Template and the gateway").
